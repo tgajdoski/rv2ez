@@ -81,18 +81,24 @@ const Landing = () => {
   }, [mapsReference, mapReference]);
 
   return (
-    <Container id="landing-page" fluid className="py-3">
+    <Container id="landing-page" fluid className="py-1">
+
       <Row className="align-middle text-right">
-        <label htmlFor="from-search">
-          From:
-        </label>
-        <SearchBar id="from-search" onSelected={handleStartSelection} onChanged={handleStartChange} />
-      </Row>
-      <Row className="align-middle text-right">
-        <label htmlFor="from-search">
-          To:
-        </label>
-        <SearchBar id="from-search" onSelected={handleDestinationSelection} onChanged={handleDestinationChange} />
+        <div className="d-flex flex-row bd-highlight mb-1">
+          <div className="d-flex flex-row bd-highlight">
+            <label htmlFor="from-search" >Start:</label>
+            <SearchBar id="from-search" onSelected={handleStartSelection} onChanged={handleStartChange} />
+          </div>
+          <div className="d-flex flex-row bd-highlight ms-2">
+            <label htmlFor="from-search">Destination:</label>
+            <SearchBar id="from-search" onSelected={handleDestinationSelection} onChanged={handleDestinationChange} className="child inline-block-child" />
+          </div>
+          <div className="d-flex flex-row bd-highlight ms-2">
+            <label htmlFor="from-search">Radius:</label>
+            <input placeholder="30"/>
+          </div>
+        </div>
+
       </Row>
       <Row className="align-middle text-center">
         <div style={{ height: '100vh', width: '100%' }}>

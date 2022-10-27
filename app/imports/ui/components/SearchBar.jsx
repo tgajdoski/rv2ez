@@ -129,18 +129,17 @@ class SearchBar extends React.Component {
 
         {((latitude && longitude) || isGeocoding) && (
           <div>
-            <h3 className="Demo__geocode-result-header">Geocode result</h3>
             {isGeocoding ? (
               <div>
                 <i className="fa fa-spinner fa-pulse fa-3x fa-fw Demo__spinner" />
               </div>
             ) : (
-              <div>
+              <div className="d-flex flex-row bd-highlight mb-1">
                 <div className="Demo__geocode-result-item--lat">
                   <label>Latitude:</label>
                   <span>{latitude}</span>
                 </div>
-                <div className="Demo__geocode-result-item--lng">
+                <div className="Demo__geocode-result-item--lng ms-3">
                   <label>Longitude:</label>
                   <span>{longitude}</span>
                 </div>
