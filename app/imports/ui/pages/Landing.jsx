@@ -15,6 +15,36 @@ const Landing = () => {
   const [destination, setDestination] = useState(undefined);
   const [directionsRenderer, setDirectionsRenderer] = useState(undefined);
 
+  const [distance, setDistance] = useState('0');
+  const [duration, setDuration] = useState('0');
+
+  const [mapApi, setMapApi] = useState(null);
+
+  useEffect(() => {
+    Meteor.call('getMapsSecret', (error, result) => {
+      if (!window.google && result) {
+        const loadScript = (url, callback) => {
+        // Adding the script tag to the head as suggested before
+          const head = document.getElementsByTagName('head')[0];
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = url;
+          // Then bind the event to the callback function.
+          // There are several events for cross browser compatibility.
+          script.onreadystatechange = callback;
+          script.onload = callback;
+          // Fire the loading
+          head.appendChild(script);
+        };
+
+        loadScript(`https://maps.googleapis.com/maps/api/js?key=${result}&libraries=places&sensor=false`, () => {
+          console.log('ready to render');
+          setMapApi(result);
+        });
+      } else setMapApi(result);
+    });
+  }, []);
+
   async function getRoute(org, dest) {
     return new Promise(function (resolve, reject) {
       const directionsService = new mapsReference.DirectionsService();
@@ -26,6 +56,9 @@ const Landing = () => {
         },
         (result, status) => {
           if (status === google.maps.DirectionsStatus.OK) {
+            console.log('EOURE ', JSON.stringify(result));
+            setDistance(result.routes[0].legs[0].distance.text);
+            setDuration(result.routes[0].legs[0].duration.text);
             resolve(result);
           } else {
             reject(result);
@@ -119,16 +152,12 @@ const Landing = () => {
           type: ['campground'],
         }, (results, status) => {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
-
             for (let i = 0; i < results.length; i++) {
-              console.log('ONE MARKER', results[i]);
               renderMarkers(mapReference, mapsReference, results[i]);
             }
           }
         });
-
       }
-
     }
   };
 
@@ -171,9 +200,8 @@ const Landing = () => {
     }
   }, [mapsReference, mapReference]);
 
-  return (
+  return mapApi && (
     <Container id="landing-page" fluid className="py-1">
-
       <Row className="align-middle text-right">
         <div className="d-flex flex-row bd-highlight mb-1">
           <div className="d-flex flex-row bd-highlight">
@@ -188,13 +216,18 @@ const Landing = () => {
             <label htmlFor="from-search">Radius:</label>
             <input placeholder="30" />
           </div>
+          <div className="d-flex flex-row bd-highlight">
+            distance { distance }
+          </div>
+          <div className="d-flex flex-row bd-highlight ms-2">
+            duration { duration }
+          </div>
         </div>
-
       </Row>
       <Row className="align-middle text-center">
         <div style={{ height: '100vh', width: '100%' }}>
           <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyBYxOxFmeIPW8zIkK1LEKPDMnGdSdmUWyg' }}
+            bootstrapURLKeys={{ key: mapApi }}
             defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
             yesIWantToUseGoogleMapApiInternals

@@ -295,10 +295,9 @@ class PlacesAutocomplete extends React.Component {
       this,
       suggestion,
     );
-
     return {
       ...options,
-      key: suggestion.id,
+      key: suggestion.id ? suggestion.id : suggestion.placeId,
       id: this.getActiveSuggestionId(),
       role: 'option',
       onMouseEnter: compose(handleSuggestionMouseEnter, options.onMouseEnter),

@@ -12,6 +12,7 @@ import { classnames } from '../helpers';
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       address: '',
       errorMessage: '',
@@ -99,13 +100,14 @@ class SearchBar extends React.Component {
                 )}
               </div>
               {suggestions.length > 0 && (
-                <div className="Demo__autocomplete-container">
-                  {suggestions.map(suggestion => {
+                <div key={suggestions.length} className="Demo__autocomplete-container">
+                  {suggestions.map((suggestion, index) => {
                     const className = classnames('Demo__suggestion-item', {
                       'Demo__suggestion-item--active': suggestion.active,
                     });
                     return (
                       <div
+                        key="AAAAAAA"
                         {...getSuggestionItemProps(suggestion, { className })}
                       >
                         <strong>
