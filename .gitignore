@@ -3,5 +3,6 @@
 .DS_Store
 node_modules
 settings.production.json
+settings.development.json
 app/.deploy/mup.js
 app/.deploy/settings.json
