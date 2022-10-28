@@ -37,8 +37,7 @@ const Landing = () => {
           head.appendChild(script);
         };
 
-        loadScript(`https://maps.googleapis.com/maps/api/js?key=${result}&libraries=places&sensor=false`, () => {
-          console.log('ready to render');
+        loadScript(`https://maps.googleapis.com/maps/api/js?key=${result}&libraries=places`, () => {
           setMapApi(result);
         });
       } else setMapApi(result);
